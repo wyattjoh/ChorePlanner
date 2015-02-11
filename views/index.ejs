@@ -6,6 +6,12 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    
+    <div id="chores"></div>
+
+    <script type="text/javascript">
+      var choresJSON = <%- JSON.stringify(chores) %>;
+    </script>
+    <script src="/components/requirejs/require.js" data-main="/javascripts/app"></script>
   </body>
 </html>

@@ -12,5 +12,13 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "react": "~0.12.2",
+    "requirejs": "~2.1.16",
+    "backbone-amd": "~1.1.0",
+    "underscore-amd": "~1.5.2",
+    "validator-js": "~3.29.0",
+    "jquery": "~2.1.3"
+  }
 }
