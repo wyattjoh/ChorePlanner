@@ -6,5 +6,10 @@ module.exports = Chore = Backbone.Model.extend
     defaults:
         name: ""
         date: ""
-        finished: false
+        completed: false
     url: "/chore"
+    toggle: () ->
+
+        this.set "completed", !this.get("completed")
+
+        return

@@ -30557,9 +30557,12 @@ module.exports = Chore = Backbone.Model.extend({
   defaults: {
     name: "",
     date: "",
-    finished: false
+    completed: false
   },
-  url: "/chore"
+  url: "/chore",
+  toggle: function() {
+    this.set("completed", !this.get("completed"));
+  }
 });
 
 
@@ -30588,16 +30591,14 @@ var ChoreView, React;
 React = require('react');
 
 module.exports = ChoreView = React.createClass({
-  handleChange: function(event) {
-    console.log(event.target.value);
-  },
   render: function() {
     return React.createElement("div", {
       "className": "chore"
     }, React.createElement("span", null, this.props.data.get("name")), React.createElement("input", {
       "type": "checkbox",
       "className": "toggle",
-      "onClick": this.handleChange
+      "onClick": this.props.data.toggle,
+      "checked": this.props.data.get("completed")
     }));
   }
 });
