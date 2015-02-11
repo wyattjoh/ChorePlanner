@@ -1,14 +1,13 @@
 var gulp = require('gulp');
-var coffee = require('gulp-coffee');
-var react = require('gulp-react');
+var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var clean = require('gulp-clean');
 var gutil = require('gulp-util');
-var amdOptimize = require("amd-optimize");
+var browserify = require('gulp-browserify');
 
 var paths = {
-    scripts: 'private/coffee/**/*.coffee',
+    scripts: 'private/coffee/*.coffee',
 };
 
 gulp.task('clean-scripts', function () {
@@ -17,26 +16,21 @@ gulp.task('clean-scripts', function () {
 });
 
 gulp.task('scripts', [ 'clean-scripts' ], function() {
-    return gulp.src(paths.scripts)
-        .pipe(coffee({bare:true, header: false}).on('error', gutil.log))
-        .pipe(react())
-        .pipe(amdOptimize("core", {
-          paths : {
-            'jquery': 'public/components/jquery/dist/jquery',
-            'underscore': 'public/components/underscore-amd/underscore',
-            'backbone': 'public/components/backbone-amd/backbone',
-            'react': 'public/components/react/react-with-addons'
-          },
-          baseURL: "/javascripts"
+    return gulp.src(paths.scripts, { read: false })
+        .pipe(browserify({
+            transform: ['coffee-reactify'],
+            extensions: ['.coffee']
         }))
-        .pipe(concat('app.js'))
         // .pipe(uglify())
-        .pipe(gulp.dest('public/javascripts'))
+        .pipe(rename(function(path) {
+            path.extname = ".js";
+        }))
+        .pipe(gulp.dest('public/javascripts'));
 });
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch('private/coffee/**/*', ['scripts']);
 });
 
 // The default task (called when you run `gulp` from cli)
